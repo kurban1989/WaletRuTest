@@ -2,11 +2,15 @@
   <header class="header">
     <h1 class="header__title">Стаканы</h1>
     <nav class="nav">
-      <router-link to="/">Home</router-link>
-      <router-link to="/about">About</router-link>
+      <router-link to="/">Состояние стаканов</router-link>
+      <router-link to="/change">Изменить символ</router-link>
     </nav>
   </header>
-  <router-view />
+  <router-view v-slot="{ Component }">
+    <keep-alive include="HomeView,ChangeView" :max="4">
+      <component :is="Component" />
+    </keep-alive>
+  </router-view>
 </template>
 
 <style lang="scss">
@@ -60,8 +64,14 @@ body {
     background-color: rgb(252, 213, 53);
     font-weight: bold;
     color: #2c3e50;
-    padding: 1em 2em;
+    padding: 0.55em;
     margin-right: 10px;
+    text-decoration: none;
+    transition: background-color 0.3s ease-out;
+
+    &:hover {
+      background-color: rgb(230, 192, 140);
+    }
 
     &.router-link-exact-active {
       background-color: rgb(255, 242, 190);

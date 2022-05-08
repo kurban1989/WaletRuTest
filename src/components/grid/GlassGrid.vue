@@ -1,7 +1,7 @@
 <template>
-  <div class="b-grid">
+  <div class="g-grid">
     <div
-      class="b-grid--grid b-grid--header"
+      class="g-grid--grid g-grid--header"
       :style="styleGridColumns"
       :bordered="false"
     >
@@ -9,7 +9,7 @@
         v-for="(caption, i) in headers"
         :key="`label-${i}`"
         class="paragraph font-weight-bold"
-        :class="caption.classNameHeader || 'b-grid--text'"
+        :class="caption.classNameHeader || 'g-grid--text'"
       >
         <slot :name="`header-${caption.prop}`" :caption="caption.label">
           {{ caption.label }}
@@ -26,7 +26,7 @@
         <div
           v-for="(header, j) in headers"
           :key="`innerItem${j}`"
-          class="b-grid--cell"
+          class="g-grid--cell"
           :class="header.className"
         >
           <slot :name="`cell-${header.prop}`" :item="item" :index="i">
@@ -66,7 +66,7 @@ export default defineComponent({
       default: undefined,
     },
   },
-  setup(props, ctx) {
+  setup(props) {
     const scrollRef = ref<VueElement>();
     const styleGridColumns = computed(() => {
       let cols = "grid-template-columns:";
@@ -84,7 +84,7 @@ export default defineComponent({
     const options = computed(() => {
       return {
         props: () => ({
-          class: `b-grid--grid`,
+          class: `g-grid--grid`,
           style: styleGridColumns.value,
         }),
       };
@@ -99,15 +99,14 @@ export default defineComponent({
     return {
       styleGridColumns,
       parseString,
+      scrollRef,
       options,
     };
   },
 });
 </script>
 <style lang="scss">
-.b-grid {
-  border-radius: $radius-base;
-
+.g-grid {
   &--header {
     background-color: azure;
     align-items: center;
@@ -115,34 +114,26 @@ export default defineComponent({
 
   &--grid {
     display: grid;
-    grid-gap: 16px;
-    padding: 0 10px;
+    grid-gap: 0;
+    border-top: 1px solid gray;
   }
 
-  &--cell :not(.self-end, .self-center) {
-    justify-self: start;
-    padding-left: 3px;
+  &--cell {
+    padding: 5px 8px;
+    border-right: 1px solid gray;
+
+    &:last-child {
+      border-right: none;
+    }
   }
 
   &--text {
     color: black;
+    font-weight: bold;
   }
 
   .align-self-center {
     align-self: center;
   }
-
-  .self-end {
-    justify-self: end;
-  }
-
-  .self-center {
-    justify-self: center;
-  }
-}
-
-.ps {
-  max-height: 650px;
 }
 </style>
-<style src="vue3-perfect-scrollbar/dist/vue3-perfect-scrollbar.css" />

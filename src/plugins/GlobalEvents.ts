@@ -32,10 +32,12 @@ export default {
       }
 
       destroy(uid: string) {
-        this.instances[uid].forEach(({ type, callback }) => {
-          this.removeEventListener(type, callback);
-        });
-        delete this.instances[uid];
+        if (this.instances[uid]) {
+          this.instances[uid].forEach(({ type, callback }) => {
+            this.removeEventListener(type, callback);
+          });
+          delete this.instances[uid];
+        }
       }
     }
 
